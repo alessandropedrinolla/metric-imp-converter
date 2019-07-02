@@ -57,6 +57,8 @@ function ConvertHandler() {
   this.getReturnUnit = function(initUnit) {
     let units = ["gal","lbs","mi","L","kg","km"];
     var result;
+    initUnit = initUnit.toLowerCase();
+    
     switch(initUnit)
     {
       case "gal":case "lbs":case "mi": 
