@@ -10,7 +10,7 @@ let unitsString = {
   "gal": "gallons",
   "lbs": "libres",
   "mi": "miles",
-  "L": "liters",
+  "l": "liters",
   "kg": "kilograms",
   "km": "kilometers",
 }
@@ -18,7 +18,7 @@ let unitsString = {
 function ConvertHandler() {
   
   this.getNum = function(input) {    
-    var result = input.match(/.*(?=(gal|lbs|mi|L|kg|km)$)/);
+    var result = input.match(/^[^a-z]*/i);
     
     if(result)
     {
@@ -26,8 +26,6 @@ function ConvertHandler() {
 
         if(result == "")
           return 1;
-
-        console.log("getnum res: " + result);
 
         // If it's not a number
         if(!/^[0-9]*(\.[0-9]+)?(\/[0-9]+(\.[0-9]+)?)?$/.test(result)) 
@@ -47,7 +45,8 @@ function ConvertHandler() {
 
   this.getUnit = function(input) {
     var result;
-    result = input.match(/(gal|lbs|mi|L|kg|km)$/);
+    input = input.toLowerCase();
+    result = input.match(/(gal|lbs|mi|l|kg|km)$/);
 
     if(result && unitsString[result[0]])
       return result[0];
@@ -55,17 +54,17 @@ function ConvertHandler() {
   };
   
   this.getReturnUnit = function(initUnit) {
-    let units = ["gal","lbs","mi","L","kg","km"];
+    let units = ["gal","lbs","mi","l","kg","km"];
     var result;
-    initUnit = initUnit.toLowerCase();
-    
+    initUnit = initUnit.toLowerCase();    
+
     switch(initUnit)
     {
       case "gal":case "lbs":case "mi": 
       {
         result = units[units.indexOf(initUnit) + 3];
       }; break;
-      case "L":case "kg":case "km": {
+      case "l":case "kg":case "km": {
         result = units[units.indexOf(initUnit) - 3];
       }; break;
     }
@@ -85,12 +84,10 @@ function ConvertHandler() {
       "gal": (num) => { return num * galToL; },
       "lbs": (num) => { return num * lbsToKg; },
       "mi": (num) => { return num * miToKm; },
-      "L": (num) => { return num / galToL; },
+      "l": (num) => { return num / galToL; },
       "kg": (num) => { return num / lbsToKg; },
       "km": (num) => { return num / miToKm; },
     }
-
-    console.log("convert: initunit:" + initUnit + " initnum:" + initNum);
 
     var result = ops[initUnit](initNum);
     

@@ -41,13 +41,13 @@ suite('Unit Tests', function(){
     });
     
     test('Invalid Input (double fraction)', function(done) {
-      var input ='12/2kg';
-      assert.equal(convertHandler.getNum(input), 6);
+      var input ='12//2kg';
+      assert.isNaN(convertHandler.getNum(input));
       done();
     });
     
     test('No Numerical Input', function(done) {
-      var input ='';
+      var input ='asd';
       assert.equal(convertHandler.getNum(input), 1);
       done();
     }); 
@@ -65,7 +65,7 @@ suite('Unit Tests', function(){
     });
     
     test('Unknown Unit Input', function(done) {
-      var input = "kgl";
+      var input = "sas";
       assert.equal(convertHandler.getUnit(input), -1);
       done();
     });  
@@ -89,9 +89,10 @@ suite('Unit Tests', function(){
     
     test('For Each Valid Unit Inputs', function(done) {
       var input = ['gal','l','mi','km','lbs','kg'];
-      var expect = ['gallons','litres','miles','kilometers','libres','kilograms'];
+      var expect = ['gallons','liters','miles','kilometers','libres','kilograms'];
       input.forEach(function(ele, i) {
-        assert.equal(convertHandler.getReturnUnit(ele), expect[i]);
+        console.log(convertHandler.getReturnUnit(ele)+" "+ expect[i]);
+        assert.equal(convertHandler.spellOutUnit(ele), expect[i]);
       });
       done();
     });
@@ -108,7 +109,7 @@ suite('Unit Tests', function(){
     });
     
     test('L to Gal', function(done) {
-      var input = [5, 'L'];
+      var input = [5, 'l'];
       var expected = 1.32086;
       assert.approximately(convertHandler.convert(input[0],input[1]),expected,0.1); //0.1 tolerance
       done();
